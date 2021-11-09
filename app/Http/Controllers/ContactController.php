@@ -39,8 +39,9 @@ class ContactController extends Controller
     {
         $validate = Validator::make($request->all(),[
             'firstname' => 'required',
-            'familyname' => 'required',
             'title' => 'required',
+            'description' => 'required',
+            'contactdate' => 'required',
         ]);
         if($validate->fails()){
             $response = ['message' => 'กรุณากรอกข้อมูลให้ครบ', 'code' => 400];
@@ -50,15 +51,16 @@ class ContactController extends Controller
             'firstname' => $request->get('firstname'),
             'familyname' => $request->get('familyname'),
             'title' => $request->get('title'),
-            'description' => $request->get('description')
+            'description' => $request->get('description'),
+            'contactdate' => $request->get('contactdate')
         ];
         $responseQuery = Contact::create($data);
         if ($responseQuery) {
             $response = ['message' => 'บันทึกข้อมูลเสร็จสิ้น', 'code' => 200];
             return response()->json($response);
         } else {
-            $response = ['message' => 'เกิดข้อผิดพลาด', 'code' => 400];
-            return response()->json($response, 400);
+            $response = ['message' => 'เกิดข้อผิดพลาด', 'code' => 500];
+            return response()->json($response, 500);
         }
         
     }
